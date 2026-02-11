@@ -19,6 +19,7 @@ body {
     color: #222;
     background-color: #fff;
     margin: 0;
+    overflow-x: hidden;
 }
 
 .container {
@@ -283,7 +284,68 @@ dialog::backdrop {
     cursor: pointer;
 }
 
-/* 10. Адаптивность */
+
+/* 10. Коллаж из фото */
+.collage {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 70px 40px 0 30px;
+    margin-bottom: -20px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Обертка для фото (теперь это ссылка) */
+.photo-item {
+    display: block;
+    text-decoration: none;
+    /* Нахлест рядов и картинок */
+    margin: -35px -25px;
+    position: relative;
+    z-index: 1;
+    transition: z-index 0s;
+}
+
+.photo {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: block;
+
+    /* Случайные значения из JS */
+    transform: rotate(var(--r, 0deg)) translateY(var(--y, 0px));
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Эффект наведения */
+.photo-item:hover {
+    z-index: 1000; /* Всплывает над всеми соседями */
+}
+
+.photo-item:hover .photo {
+    transform: rotate(0deg) scale(1.2) translateY(0) !important;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.collage::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 0;
+    margin-bottom: -30px;
+}
+
+.next-section {
+    background: white;
+    padding: 20px;
+    position: relative;
+    min-height: 200px;
+}
+
+/* 11. Адаптивность */
 @media (max-width: 900px) {
     .wrapper {
         flex-direction: column;
@@ -306,6 +368,15 @@ dialog::backdrop {
 }
 
 @media (max-width: 600px) {
+    .collage {
+        padding: 40px 15px;
+    }
+    .photo {
+        width: 140px;
+        height: 140px;
+        margin: -20px;
+        border-width: 5px;
+    }
     .page-numbers {
         display: none;
     }
