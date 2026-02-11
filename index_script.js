@@ -2386,26 +2386,30 @@ const photoData = [
 
 function initCollage() {
     const container = document.getElementById('collage');
+    if (!container) return;
 
-    // Перемешиваем и берем 10 штук
-    const selected = [...photoData]
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 10);
+    // ГАРАНТИРОВАННОЕ ПЕРЕМЕШИВАНИЕ (Фишер-Йейтс)
+    let shuffled = [...photoData];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    // Выбираем первые 10 уникальных объектов
+    const selected = shuffled.slice(0, 10);
 
     selected.forEach(item => {
-        // Создаем ссылку
         const link = document.createElement('a');
         link.href = item.url;
         link.className = 'photo-item';
 
-        // Создаем картинку
         const img = document.createElement('img');
         img.src = item.src;
         img.className = 'photo';
 
-        // Случайный наклон и смещение
-        const deg = Math.floor(Math.random() * 21) - 10;
-        const yShift = Math.floor(Math.random() * 21) - 10;
+        // Случайный наклон и легкое смещение по высоте
+        const deg = Math.floor(Math.random() * 21) - 10; // -10 до 10 градусов
+        const yShift = Math.floor(Math.random() * 21) - 10; // -10 до 10 пикселей
 
         img.style.setProperty('--r', `${deg}deg`);
         img.style.setProperty('--y', `${yShift}px`);
